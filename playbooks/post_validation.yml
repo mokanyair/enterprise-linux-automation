@@ -1,0 +1,23 @@
+---
+- name: Post-change Enterprise Linux validation
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Verify host is reachable
+      ansible.builtin.ping:
+
+    - name: Verify operating system
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution == "RedHat"
+        fail_msg: "Host is not running Red Hat Enterprise Linux"
+        success_msg: "RHEL validation passed"
+
+    - name: Display final validation summary
+      ansible.builtin.debug:
+        msg:
+          - "Host: {{ inventory_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Validation status: PASSED"
