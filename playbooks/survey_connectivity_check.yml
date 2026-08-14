@@ -1,0 +1,20 @@
+---
+- name: Survey-driven Enterprise Linux validation
+  hosts: "{{ target_group | default('all') }}"
+  gather_facts: true
+
+  tasks:
+
+    - name: Verify Ansible connectivity
+      ansible.builtin.ping:
+
+    - name: Display managed host information
+      ansible.builtin.debug:
+        msg:
+          - "Inventory host: {{ inventory_hostname }}"
+          - "Hostname: {{ ansible_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Architecture: {{ ansible_architecture }}"
+          - "Selected target group: {{ target_group | default('all') }}"
+      when: detailed_check | default(true) | bool
