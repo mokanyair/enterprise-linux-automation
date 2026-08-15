@@ -1,0 +1,40 @@
+---
+- name: Demonstrate Enterprise AAP variable precedence
+  hosts: all
+  gather_facts: true
+
+  vars:
+    playbook_defined_variable: "Defined inside variable_precedence.yml"
+
+  tasks:
+
+    - name: Display host identity
+      ansible.builtin.debug:
+        msg:
+          - "Inventory Host: {{ inventory_hostname }}"
+          - "System Hostname: {{ ansible_hostname }}"
+          - "IP Address: {{ ansible_host | default('not-defined') }}"
+
+    - name: Display enterprise variables
+      ansible.builtin.debug:
+        msg:
+          - "Environment: {{ environment_name | default('not-defined') }}"
+          - "Patch Window: {{ patch_window | default('not-defined') }}"
+          - "Support Team: {{ support_team | default('not-defined') }}"
+          - "Application Tier: {{ application_tier | default('not-defined') }}"
+          - "Change Ticket: {{ change_ticket | default('not-defined') }}"
+
+    - name: Display web configuration
+      ansible.builtin.debug:
+        msg:
+          - "HTTP Port: {{ http_port | default('not-defined') }}"
+          - "HTTPS Port: {{ https_port | default('not-defined') }}"
+
+    - name: Display playbook variable
+      ansible.builtin.debug:
+        msg:
+          - "{{ playbook_defined_variable }}"
+
+    - name: Variable precedence test completed
+      ansible.builtin.debug:
+        msg: "Variable evaluation completed successfully for {{ inventory_hostname }}"
