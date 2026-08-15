@@ -1,0 +1,24 @@
+---
+- name: Enterprise automation failure handler
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: Display automation failure notification
+      ansible.builtin.debug:
+        msg:
+          - "ENTERPRISE AUTOMATION FAILURE"
+          - "Host: {{ inventory_hostname }}"
+          - "A previous workflow stage failed."
+          - "Manual investigation may be required."
+
+    - name: Record failure timestamp
+      ansible.builtin.command:
+        cmd: date
+      register: failure_timestamp
+      changed_when: false
+
+    - name: Display failure timestamp
+      ansible.builtin.debug:
+        var: failure_timestamp.stdout
