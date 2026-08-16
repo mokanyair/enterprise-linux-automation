@@ -1,0 +1,3 @@
+---
+support_team: linux-operations
+ansible_user: ec2-user

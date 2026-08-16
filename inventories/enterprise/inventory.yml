@@ -1,0 +1,55 @@
+---
+all:
+  children:
+
+    env_production:
+      hosts:
+        rhel01:
+        rhel02:
+        rhel05:
+
+    env_development:
+      hosts:
+        rhel03:
+        rhel04:
+
+    role_web:
+      hosts:
+        rhel01:
+        rhel02:
+
+    role_app:
+      hosts:
+        rhel03:
+        rhel04:
+
+    role_database:
+      hosts:
+        rhel05:
+
+    region_us_east_1:
+      hosts:
+        rhel01:
+        rhel02:
+        rhel03:
+        rhel04:
+        rhel05:
+
+    os_rhel9:
+      hosts:
+        rhel01:
+        rhel02:
+        rhel03:
+        rhel04:
+        rhel05:
+
+    app_payments:
+      hosts:
+        rhel01:
+        rhel02:
+        rhel05:
+
+    app_shared_services:
+      hosts:
+        rhel03:
+        rhel04:

@@ -1,0 +1,4 @@
+---
+environment_name: development
+patch_window: daily-2200
+reboot_default: true
