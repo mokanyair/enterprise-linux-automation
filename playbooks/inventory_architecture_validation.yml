@@ -1,0 +1,21 @@
+---
+- name: Validate Enterprise Inventory Architecture
+  hosts: all
+  gather_facts: true
+
+  tasks:
+
+    - name: Display inventory identity
+      ansible.builtin.debug:
+        msg:
+          - "Inventory Host: {{ inventory_hostname }}"
+          - "IP: {{ ansible_host }}"
+          - "Environment: {{ environment_name | default('undefined') }}"
+          - "Application Tier: {{ application_tier | default('undefined') }}"
+          - "Support Team: {{ support_team | default('undefined') }}"
+          - "OS Family: {{ os_family | default('undefined') }}"
+          - "OS Major Version: {{ os_major_version | default('undefined') }}"
+
+    - name: Display group membership
+      ansible.builtin.debug:
+        var: group_names
