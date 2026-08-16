@@ -1,0 +1,23 @@
+---
+- name: Validate Ansible Vault credential integration
+  hosts: rhel01
+  gather_facts: false
+
+  vars_files:
+    - ../vars/secure.yml
+
+  tasks:
+
+    - name: Confirm encrypted variables were decrypted
+      ansible.builtin.debug:
+        msg:
+          - "Secure application user loaded: {{ secure_application_user }}"
+          - "Secure password was successfully decrypted."
+
+    - name: Never print the secret
+      ansible.builtin.assert:
+        that:
+          - secure_demo_password is defined
+          - secure_demo_password | length > 0
+        success_msg: "Encrypted secret is available to automation."
+        fail_msg: "Encrypted secret could not be loaded."
