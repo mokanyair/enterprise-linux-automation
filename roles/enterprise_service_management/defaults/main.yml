@@ -1,0 +1,10 @@
+---
+enterprise_managed_services:
+  - name: chronyd
+    state: started
+    enabled: true
+
+  - name: rsyslog
+    state: started
+    enabled: true
+

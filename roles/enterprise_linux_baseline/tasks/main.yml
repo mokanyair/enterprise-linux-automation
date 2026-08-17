@@ -1,0 +1,51 @@
+---
+- name: Validate supported operating system
+  ansible.builtin.assert:
+    that:
+      - ansible_facts.os_family == "RedHat"
+      - ansible_facts.distribution_major_version | int >= 9
+    fail_msg: >-
+      Unsupported operating system:
+      {{ ansible_facts.distribution }}
+      {{ ansible_facts.distribution_version }}
+    success_msg: >-
+      Supported RHEL platform detected:
+      {{ ansible_facts.distribution }}
+      {{ ansible_facts.distribution_version }}
+
+- name: Install enterprise baseline packages
+  ansible.builtin.dnf:
+    name: "{{ enterprise_baseline_packages }}"
+    state: present
+
+- name: Create enterprise standard directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  loop: "{{ enterprise_baseline_directories }}"
+
+- name: Deploy enterprise system banner
+  ansible.builtin.template:
+    src: enterprise-motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy enterprise environment metadata
+  ansible.builtin.template:
+    src: enterprise-environment.j2
+    dest: /etc/enterprise-environment
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Ensure rsyslog is enabled and running
+  ansible.builtin.service:
+    name: rsyslog
+    state: started
+    enabled: true
+

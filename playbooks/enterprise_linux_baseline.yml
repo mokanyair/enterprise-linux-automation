@@ -1,0 +1,32 @@
+---
+- name: Apply enterprise RHEL configuration baseline
+  hosts: all
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+
+    - name: Display change context
+      ansible.builtin.debug:
+        msg:
+          - "Host: {{ inventory_hostname }}"
+          - "Environment: {{ enterprise_environment | default('unknown') }}"
+          - "Change Ticket: {{ enterprise_change_ticket | default('not-provided') }}"
+
+  roles:
+
+    - role: enterprise_linux_baseline
+
+    - role: enterprise_service_management
+
+    - role: redhat.rhel_system_roles.timesync
+
+    - role: enterprise_ssh_baseline
+
+  post_tasks:
+
+    - name: Confirm baseline deployment completed
+      ansible.builtin.debug:
+        msg: >-
+          Enterprise Linux baseline completed successfully
+          for {{ inventory_hostname }}.
