@@ -1,0 +1,52 @@
+---
+- name: Validate Enterprise RHEL baseline
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Verify enterprise directory exists
+      ansible.builtin.stat:
+        path: /opt/enterprise
+      register: enterprise_directory
+
+    - name: Assert enterprise directory configuration
+      ansible.builtin.assert:
+        that:
+          - enterprise_directory.stat.exists
+          - enterprise_directory.stat.isdir
+        fail_msg: "Enterprise baseline directory is missing."
+
+    - name: Read enterprise environment file
+      ansible.builtin.slurp:
+        src: /etc/enterprise-environment
+      register: enterprise_environment_file
+
+    - name: Validate enterprise environment metadata
+      ansible.builtin.assert:
+        that:
+          - enterprise_environment in
+            (enterprise_environment_file.content | b64decode)
+        fail_msg: "Enterprise environment metadata is incorrect."
+
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Validate required services
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['chronyd.service'].state == 'running'
+          - ansible_facts.services['rsyslog.service'].state == 'running'
+        fail_msg: "Required enterprise services are not running."
+
+    - name: Validate sshd configuration
+      ansible.builtin.command:
+        cmd: /usr/sbin/sshd -t
+      changed_when: false
+
+    - name: Baseline validation successful
+      ansible.builtin.debug:
+        msg: >-
+          Enterprise baseline validation PASSED for
+          {{ inventory_hostname }}.
