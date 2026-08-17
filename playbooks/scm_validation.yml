@@ -1,0 +1,12 @@
+---
+- name: Validate SCM-controlled automation
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Display SCM validation
+      ansible.builtin.debug:
+        msg:
+          - "Inventory host: {{ inventory_hostname }}"
+          - "Automation source: Git"
+          - "SCM branch-controlled execution is working."
