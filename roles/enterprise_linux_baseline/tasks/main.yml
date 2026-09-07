@@ -15,7 +15,7 @@
 
 - name: Install enterprise baseline packages
   ansible.builtin.dnf:
-    name: "{{ enterprise_baseline_packages }}"
+    name: "{{ enterprise_linux_baseline_packages }}"
     state: present
 
 - name: Create enterprise standard directories
@@ -25,7 +25,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
     state: directory
-  loop: "{{ enterprise_baseline_directories }}"
+  loop: "{{ enterprise_linux_baseline_directories }}"
 
 - name: Deploy enterprise system banner
   ansible.builtin.template:
@@ -42,4 +42,3 @@
     owner: root
     group: root
     mode: "0644"
-

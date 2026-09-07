@@ -15,4 +15,3 @@
     group: root
     mode: "0600"
   notify: Validate and reload sshd
-

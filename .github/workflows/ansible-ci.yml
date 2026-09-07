@@ -1,0 +1,104 @@
+---
+name: Enterprise Ansible CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+      - "feature/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    name: Ansible Quality and Security Gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validation tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install \
+            ansible-core==2.16.* \
+            ansible-lint \
+            yamllint \
+            ansible-builder
+
+      - name: Install required Ansible collections
+        run: |
+          ansible-galaxy collection install \
+            -r execution-environment/requirements.yml
+
+      - name: Validate YAML
+        run: |
+          yamllint \
+            inventories \
+            playbooks \
+            roles \
+            execution-environment \
+            collections \
+            .github
+
+      - name: Run ansible-lint
+        run: |
+          ansible-lint \
+            playbooks \
+            roles
+
+      - name: Run Ansible syntax checks
+        run: |
+          set -euo pipefail
+
+          for playbook in playbooks/*.yml; do
+            echo "Checking ${playbook}"
+
+            ansible-playbook \
+              --syntax-check \
+              -i inventories/enterprise/inventory.yml \
+              "${playbook}"
+          done
+
+      - name: Check for prohibited secret patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git grep -nE \
+            'ghp_[A-Za-z0-9]+|github_pat_[A-Za-z0-9_]+|AKIA[0-9A-Z]{16}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY'; then
+            echo "Potential secret material detected."
+            exit 1
+          fi
+
+          echo "No prohibited secret patterns detected."
+
+      - name: Ensure generated EE context is not tracked
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git ls-files execution-environment/context | grep -q .; then
+            echo "Generated Ansible Builder context must not be committed."
+            exit 1
+          fi
+
+          echo "Execution Environment build context is not tracked."
+
+      - name: Validate Execution Environment definition
+        working-directory: execution-environment
+        run: |
+          ansible-builder create \
+            -f execution-environment.yml \
+            --output-filename Containerfile

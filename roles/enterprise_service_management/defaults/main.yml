@@ -1,5 +1,5 @@
 ---
-enterprise_managed_services:
+enterprise_service_management_managed_services:
   - name: rsyslog
     state: started
     enabled: true

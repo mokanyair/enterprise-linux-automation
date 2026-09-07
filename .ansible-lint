@@ -1,0 +1,9 @@
+---
+profile: production
+
+exclude_paths:
+  - execution-environment/context/
+  - .git/
+
+skip_list:
+  - yaml[line-length]

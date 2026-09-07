@@ -4,4 +4,4 @@
     name: "{{ item.name }}"
     state: "{{ item.state }}"
     enabled: "{{ item.enabled }}"
-  loop: "{{ enterprise_managed_services }}"
+  loop: "{{ enterprise_service_management_managed_services }}"

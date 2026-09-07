@@ -1,5 +1,5 @@
 ---
-enterprise_baseline_packages:
+enterprise_linux_baseline_packages:
   - vim-enhanced
   - curl
   - wget
@@ -9,7 +9,7 @@ enterprise_baseline_packages:
   - chrony
   - rsyslog
 
-enterprise_baseline_directories:
+enterprise_linux_baseline_directories:
   - path: /opt/enterprise
     owner: root
     group: root
@@ -19,6 +19,3 @@ enterprise_baseline_directories:
     owner: root
     group: root
     mode: "0755"
-
-enterprise_environment: unknown
-enterprise_support_team: linux-operations

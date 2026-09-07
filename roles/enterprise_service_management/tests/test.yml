@@ -1,5 +1,8 @@
 ---
-- hosts: localhost
-  remote_user: root
+- name: Test enterprise service management role
+  hosts: localhost
+  gather_facts: true
+  become: true
+
   roles:
-    - roles/enterprise_service_management
+    - enterprise_service_management

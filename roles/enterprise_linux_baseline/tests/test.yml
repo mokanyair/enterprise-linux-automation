@@ -1,5 +1,8 @@
 ---
-- hosts: localhost
-  remote_user: root
+- name: Test enterprise Linux baseline role
+  hosts: localhost
+  gather_facts: true
+  become: true
+
   roles:
-    - roles/enterprise_linux_baseline
+    - enterprise_linux_baseline
