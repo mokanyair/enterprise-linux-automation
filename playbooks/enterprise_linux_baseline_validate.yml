@@ -1,0 +1,61 @@
+---
+- name: Validate Enterprise RHEL baseline
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Verify enterprise directory exists
+      ansible.builtin.stat:
+        path: /opt/enterprise
+      register: enterprise_directory
+
+    - name: Assert enterprise directory configuration
+      ansible.builtin.assert:
+        that:
+          - enterprise_directory.stat.exists
+          - enterprise_directory.stat.isdir
+        fail_msg: "Enterprise baseline directory is missing."
+
+    - name: Read enterprise environment file
+      ansible.builtin.slurp:
+        src: /etc/enterprise-environment
+      register: enterprise_environment_file
+
+    - name: Validate enterprise environment metadata
+      ansible.builtin.assert:
+        that:
+          - "'ENVIRONMENT=' ~ (enterprise_environment | default('unknown')) in
+             (enterprise_environment_file.content | b64decode)"
+          - "'SUPPORT_TEAM=' ~ (enterprise_support_team | default('linux-operations')) in
+             (enterprise_environment_file.content | b64decode)"
+        fail_msg: >-
+          Enterprise environment metadata is incorrect.
+          Expected environment={{ enterprise_environment | default('unknown') }}
+          and enterprise_support_team={{ enterprise_support_team | default('linux-operations') }}.
+        success_msg: "Enterprise environment metadata validation passed."
+
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Validate required services
+      ansible.builtin.assert:
+        that:
+          - "'chronyd.service' in ansible_facts.services"
+          - "'rsyslog.service' in ansible_facts.services"
+          - ansible_facts.services['chronyd.service'].state == 'running'
+          - ansible_facts.services['rsyslog.service'].state == 'running'
+        fail_msg: "Required enterprise services are missing or not running."
+        success_msg: "Required enterprise services are running."
+
+    - name: Validate sshd configuration
+      ansible.builtin.command:
+        cmd: /usr/sbin/sshd -t
+      changed_when: false
+
+    - name: Baseline validation successful
+      ansible.builtin.debug:
+        msg: >-
+          Enterprise baseline validation PASSED for
+          {{ inventory_hostname }}.

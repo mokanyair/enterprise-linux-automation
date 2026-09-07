@@ -1,0 +1,8 @@
+---
+- name: Test enterprise Linux baseline role
+  hosts: localhost
+  gather_facts: true
+  become: true
+
+  roles:
+    - enterprise_linux_baseline

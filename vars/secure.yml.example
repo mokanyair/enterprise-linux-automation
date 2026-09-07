@@ -1,0 +1,11 @@
+---
+# Example only.
+# Do not store real credentials in this repository.
+
+secure_application_user: example_service_account
+secure_demo_password: CHANGE_ME
+
+# Production secrets should be supplied through:
+# - Red Hat Ansible Automation Platform Credentials
+# - Ansible Vault
+# - An approved enterprise secrets-management platform

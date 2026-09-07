@@ -18,9 +18,9 @@
     - name: Display enterprise variables
       ansible.builtin.debug:
         msg:
-          - "Environment: {{ environment_name | default('not-defined') }}"
+          - "Environment: {{ enterprise_environment | default('not-defined') }}"
           - "Patch Window: {{ patch_window | default('not-defined') }}"
-          - "Support Team: {{ support_team | default('not-defined') }}"
+          - "Support Team: {{ enterprise_support_team | default('not-defined') }}"
           - "Application Tier: {{ application_tier | default('not-defined') }}"
           - "Change Ticket: {{ change_ticket | default('not-defined') }}"
 

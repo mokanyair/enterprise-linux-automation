@@ -10,9 +10,9 @@
         msg:
           - "Inventory Host: {{ inventory_hostname }}"
           - "IP: {{ ansible_host }}"
-          - "Environment: {{ environment_name | default('undefined') }}"
+          - "Environment: {{ enterprise_environment | default('undefined') }}"
           - "Application Tier: {{ application_tier | default('undefined') }}"
-          - "Support Team: {{ support_team | default('undefined') }}"
+          - "Support Team: {{ enterprise_support_team | default('undefined') }}"
           - "OS Family: {{ os_family | default('undefined') }}"
           - "OS Major Version: {{ os_major_version | default('undefined') }}"
 

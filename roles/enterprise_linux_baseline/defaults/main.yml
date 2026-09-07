@@ -1,0 +1,21 @@
+---
+enterprise_linux_baseline_packages:
+  - vim-enhanced
+  - curl
+  - wget
+  - rsync
+  - tar
+  - unzip
+  - chrony
+  - rsyslog
+
+enterprise_linux_baseline_directories:
+  - path: /opt/enterprise
+    owner: root
+    group: root
+    mode: "0755"
+
+  - path: /var/log/enterprise
+    owner: root
+    group: root
+    mode: "0755"

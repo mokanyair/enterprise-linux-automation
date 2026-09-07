@@ -1,3 +1,6 @@
 ---
-support_team: linux-operations
-ansible_user: ec2-user
+enterprise_support_team: linux-operations
+
+# Authentication is intentionally excluded from source control.
+# Red Hat Ansible Automation Platform supplies connection identity
+# and authentication through managed Machine Credentials.

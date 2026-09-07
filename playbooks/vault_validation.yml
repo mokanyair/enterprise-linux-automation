@@ -3,6 +3,9 @@
   hosts: rhel01
   gather_facts: false
 
+  # Create vars/secure.yml locally from vars/secure.yml.example
+  # and encrypt it with ansible-vault before running this playbook.
+  # vars/secure.yml is intentionally excluded from Git.
   vars_files:
     - ../vars/secure.yml
 

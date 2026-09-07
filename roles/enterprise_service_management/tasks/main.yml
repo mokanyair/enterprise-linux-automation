@@ -1,0 +1,7 @@
+---
+- name: Manage enterprise Linux services
+  ansible.builtin.service:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    enabled: "{{ item.enabled }}"
+  loop: "{{ enterprise_service_management_managed_services }}"
