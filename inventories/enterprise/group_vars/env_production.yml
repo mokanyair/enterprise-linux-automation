@@ -1,4 +1,6 @@
 ---
-environment_name: production
+enterprise_environment: production
+
+# Example production maintenance policy.
 patch_window: sunday-0200
 reboot_default: false

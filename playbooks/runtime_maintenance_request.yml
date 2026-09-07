@@ -30,6 +30,23 @@
         fail_msg: "Invalid target environment."
         success_msg: "Environment validation passed."
 
+    - name: Validate maintenance action
+      ansible.builtin.assert:
+        that:
+          - maintenance_action in ['validate', 'patch']
+        fail_msg: "Unsupported maintenance action."
+        success_msg: "Maintenance action validation passed."
+
+    - name: Validate requested environment against inventory
+      ansible.builtin.assert:
+        that:
+          - enterprise_environment is defined
+          - target_environment == enterprise_environment
+        fail_msg: >-
+          Requested environment '{{ target_environment }}' does not match
+          inventory environment '{{ enterprise_environment | default("undefined") }}'.
+        success_msg: "Requested environment matches inventory policy."
+
     - name: Perform validation action
       ansible.builtin.debug:
         msg: "Executing validation workflow for {{ inventory_hostname }}"

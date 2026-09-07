@@ -1,4 +1,6 @@
 ---
-environment_name: development
+enterprise_environment: development
+
+# Example maintenance policy for this synthetic reference environment.
 patch_window: daily-2200
 reboot_default: true

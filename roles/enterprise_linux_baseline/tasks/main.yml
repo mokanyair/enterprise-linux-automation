@@ -2,7 +2,7 @@
 - name: Validate supported operating system
   ansible.builtin.assert:
     that:
-      - ansible_facts.os_family == "RedHat"
+      - ansible_facts.distribution == "RedHat"
       - ansible_facts.distribution_major_version | int >= 9
     fail_msg: >-
       Unsupported operating system:
@@ -42,10 +42,4 @@
     owner: root
     group: root
     mode: "0644"
-
-- name: Ensure rsyslog is enabled and running
-  ansible.builtin.service:
-    name: rsyslog
-    state: started
-    enabled: true
 
