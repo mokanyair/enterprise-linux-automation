@@ -14,8 +14,7 @@ This repository is an independently developed reference implementation that demo
 
 ## Architecture
 
-<img width="1774" height="887" alt="Reference architecture" src="https://github.com/user-attachments/assets/9c1f165b-f382-4ad1-a0ce-c44fffe6f6fd" />
-
+<img width="1200" height="687" alt="image" src="https://github.com/user-attachments/assets/ad016ad7-f0a2-4955-a314-4121231e7a93" />
 
 ## Execution Environment
 
